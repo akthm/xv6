@@ -542,18 +542,17 @@ cps37()
 	
 	acquire(&ptable.lock);
 	cprintf("name \t pid \t state \t \t ppid \t \n");
-	int index = 0;
 	for ( p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        int ppid = p->pid == 1 ? 0 : p->parent->pid;
 	if ( p->state == SLEEPING ){
-		cprintf("%s \t %d \t SLEEPING \t %d \t \n", p->name, p->pid, index);
+		cprintf("%s \t %d \t SLEEPING \t %d \t \n", p->name, p->pid, ppid);
 		}
 	else if ( p->state == RUNNING ){
-		cprintf("%s \t %d \t RUNNING \t %d \t \n", p->name, p->pid, index);
+		cprintf("%s \t %d \t RUNNING \t %d \t \n", p->name, p->pid, ppid);
 		}	
 	else if ( p->state == RUNNABLE) {
-		cprintf("%s \t %d \t RUNNABLE \t %d \t \n", p->name, p->pid, index);
+		cprintf("%s \t %d \t RUNNABLE \t %d \t \n", p->name, p->pid, ppid);
 		}
-	index++;
 	}
 	release(&ptable.lock);
 	return 22;
